@@ -1,0 +1,29 @@
+Docker Commands
+
+--------------------------
+Version Check:
+docker version
+
+Run a docker image:
+docker run [image]
+Example : docker run docker/whalesay cowsay Hello-World
+
+List Containers:
+
+Show Running containers: docker ps
+Show Running/stopped containers : docker ps -a
+
+Stop Containers:
+
+To list : docker ps -a
+To Stop : docker stop [name of container]
+Example : docker stop silly_sammet
+
+Remove the stopped Containers:
+
+List the containers: docker ps -a
+To remove container: docker rm [container name]
+Example : docker rm silly_sammet
+
+
+
