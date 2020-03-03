@@ -143,5 +143,6 @@ If an application has an environment variable to change the color of homepage.
 
 To find the envronment variables:
 > docker inspect container_ID
+
 > Example : docker run -d --name mysql-db -e MYSQL_ROOT_PASSWORD=db_pass123 mysql
 
