@@ -26,4 +26,13 @@ To remove container: docker rm [container name]
 Example : docker rm silly_sammet
 
 
+List of Images:
+docker images
 
+Remove images:
+docker rmi [image name]
+
+Pull the Image not to Run:
+docker pull [image name]
+
+ 
