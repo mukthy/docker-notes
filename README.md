@@ -191,6 +191,20 @@ Commands to give a tag and build the docker image:
 
 *Example : docker build . -t natz-app*
 
+Command to give a repo/username with image name:
+
+`docker build . -t repo/image_name`
+
+*Example : docker build . -t mukthy/natz-app*
+
+Command to push the image to your docker hub repository:
+
+`docker login`
+
+`docker push repo/image_name`
+
+*Example : docker push mukthy/natz-app*
+
 ## Commands and Entrypoints
 
 In order to stop a ubuntu container from getting EXIT right after launch, we can make changes in the Dockerfile or create our own Dockerfile.
@@ -230,4 +244,4 @@ The 10 is appended by the CMD mentioned in the Dokerfile and the container will 
 
 To modify the entry point of the Dockerfile:
 
-docker run --entrypoint sleep2.0 ubuntu-sleeper 10
+`docker run --entrypoint sleep2.0 ubuntu-sleeper 10`
