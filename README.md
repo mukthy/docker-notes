@@ -164,18 +164,18 @@ Below commands are used in setting up the docker with flask web-server manually 
 
 **Creating the Dockerfile for the Docker image**
 
-`nano Dockerfile`
+`nano Dockerfile
 
-`FROM ubuntu`
+FROM ubuntu
 
-`RUN apt-get update`
+RUN apt-get update
 
-`RUN apt-get install python python-pip -y`
+RUN apt-get install python python-pip -y
 
-`RUN pip install flask`
+RUN pip install flask
 
-`RUN pip install flask-mysql`
+RUN pip install flask-mysql
 
-`COPY app.py /opt/app.py`
+COPY app.py /opt/app.py
 
-`ENTRYPOINT FLASK_APP=/opt/app.py flask run --host=0.0.0.0`
+ENTRYPOINT FLASK_APP=/opt/app.py flask run --host=0.0.0.0`
