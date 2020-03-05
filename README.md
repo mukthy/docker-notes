@@ -156,26 +156,24 @@ First create a docker and run the application manually and check what are the st
 Below commands are used in setting up the docker with flask web-server manually and host an application.
 
 `apt-get update`
+
 `apt-get install python python-pip -y`
+
 `pip install flask`
+
 `pip install flask-mysql`
+
 `Create/Code application to source dir /opt/app.py`
+
 `FLASK_APP=/opt/app.py flask run --host=0.0.0.0`
 
 **Creating the Dockerfile for the Docker image**
 
-`nano Dockerfile
-
-FROM ubuntu
-
-RUN apt-get update
-
-RUN apt-get install python python-pip -y
-
-RUN pip install flask
-
-RUN pip install flask-mysql
-
-COPY app.py /opt/app.py
-
-ENTRYPOINT FLASK_APP=/opt/app.py flask run --host=0.0.0.0`
+> nano Dockerfile
+> FROM ubuntu
+> RUN apt-get update
+> RUN apt-get install python python-pip -y
+> RUN pip install flask
+> RUN pip install flask-mysql
+> COPY app.py /opt/app.py
+> ENTRYPOINT FLASK_APP=/opt/app.py flask run --host=0.0.0.0`
