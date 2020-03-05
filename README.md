@@ -183,4 +183,51 @@ Below commands are used in setting up the docker with flask web-server manually 
 
 > COPY app.py /opt/app.py
 
-> ENTRYPOINT FLASK_APP=/opt/app.py flask run --host=0.0.0.0`
+> ENTRYPOINT FLASK_APP=/opt/app.py flask run --host=0.0.0.0
+
+Commands to give a tag and build the docker image:
+
+`docker build . -t [image_name]`
+
+*Example : docker build . -t natz-app*
+
+## Commands and Entrypoints
+
+In order to stop a ubuntu container from getting EXIT right after launch, we can make changes in the Dockerfile or create our own Dockerfile.
+
+The CMD in the docker file decides what the container has to execute after the launch.
+By default the ubuntu has bash as CMD which is not a service, rather it is a terminal to take input.
+
+To stop the Ubuntu container from geting Exit we can append the CMD during the initialization of the container.
+
+`docker run ubuntu sleep 5`
+
+We can mention the sleep 5 in the Dockerfile such as:
+
+`CMD sleep 5`
+
+If we want to just enter the parameter such as 5 or 10 at the initialization of the container, we can use ENTRYPOINT in the Dockerfile instead of CMD such as:
+
+`ENTRYPOINT sleep`
+
+`ENTRYPOINT ["sleep"]`
+
+During initialization we have to run like as below:
+
+`docker run ubuntu-sleeper 10`  
+
+In order to avoid the missing operand error we need to mention both the ENTRYPOINT and CMD as given below in the Dockerfile.
+
+`FROM ubuntu`
+
+`ENTRYPOINT ["sleep"]`
+
+`CMD ["5"]`
+
+*Example if we enter the command as docker run ubuntu-sleeper 10*
+
+The 10 is appended by the CMD mentioned in the Dokerfile and the container will be in sleep for 10 sec.
+
+To modify the entry point of the Dockerfile:
+
+docker run --entrypoint sleep2.0 ubuntu-sleeper 10
