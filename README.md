@@ -263,3 +263,194 @@ docker links commands
 *docker link may get depriciated in the future*
 
 **Docker Yaml**
+
+Create a docker-compose.yml
+
+`redis:`
+
+	`image: redis`
+
+`db: postgres:9.4`
+
+`vote:`
+	
+	`image: voting-app`    `[build ./vote]` *we can use the build instead of the image command if we have the application in our local directory*
+
+	`ports:`
+
+		`- 5000:80`
+
+	`links:`
+
+		`- redis`
+
+`result:`
+
+	`image: result-app`
+
+	`ports:`
+
+		`- 5000:80`
+
+	`limks:`
+
+		`- db`
+
+`worker:`
+	
+	`image: worker`
+
+	`links: `
+
+		`- redis`
+
+		`- db`
+
+Docker Compose yml command
+
+`docker-compose up`
+
+**Docker Versions**
+
+*docker-compose-yml - version 1*
+
+`redis: `
+	
+	`imnage: redis`
+
+`db:`
+	
+	`image: postgres:9.4`
+
+`vote:` 
+	
+	`image: voting-app`
+
+	`ports:`
+
+		`- 5000:80`
+
+	`links:`
+
+		`- redis`
+
+*docker-compose-yml - version 2*
+
+In version 2 we need to mention the version details on the yml file.
+
+`version: 2 `
+
+`services:`
+
+	`redis: `
+	
+		`imnage: redis`
+
+	`db:`
+	
+		`image: postgres:9.4`
+
+	`vote:` 
+	
+		`image: voting-app`
+
+		`ports:`
+
+			`- 5000:80`
+
+In version 1 the docker container are networked using the default bridged networkand then use links to enable communication between them.
+in version 2 we can remove the links, since it uses a dedicated briged network for the containers to communicate between them. So we can remove the links from the yml file.
+
+The added feature in the version 2 is that we can mention the startup order such as if the application container should only start if the redis container is started.
+
+we can add the below code in the yml file.
+
+`version: 2 `
+
+`services:`
+
+	`redis: `
+	
+		`imnage: redis`
+
+	`db:`
+	
+		`image: postgres:9.4`
+
+	`vote:` 
+	
+		`image: voting-app`
+
+		`ports:`
+
+			`- 5000:80`
+
+		`depends_on:`
+	
+			`- redis`
+
+*docker-compose-yml - version 3*
+
+Swarm supported in version 3.
+
+**Docker Networking**
+
+We can mention the backend-network or front-end network based on the application.
+
+`version: 2 `
+
+`services:`
+
+	`redis: `
+	
+		`imnage: redis`
+
+		`networks:`
+
+			`- back-end`
+
+	`db:`
+	
+		`image: postgres:9.4`
+
+		`networks:`
+
+			`- back-end`
+
+	`vote:` 
+	
+		`image: voting-app`
+
+		`ports:`
+
+			`- 5000:80`
+
+		`depends_on:`
+	
+			`- redis`
+
+		`networks:`
+
+			`- back-end`
+
+			`- front-end`
+
+	`result:`
+
+		`image: result`
+
+		`ports:`
+
+			`- 5000:80`
+
+		`networks:`
+
+			`- back-end`
+
+			`- front-end`
+
+`networks:`
+	
+	`front-end:`
+
+	`back-end:`
