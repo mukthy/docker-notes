@@ -397,60 +397,32 @@ Swarm supported in version 3.
 
 We can mention the backend-network or front-end network based on the application.
 
-	`version: 2 `
-
-	`services:`
-
-		`redis: `
-	
-			`imnage: redis`
-
-			`networks:`
-
-				`- back-end`
-
-		`db:`
-	
-			`image: postgres:9.4`
-
-			`networks:`
-
-				`- back-end`
-
-		`vote:` 
-	
-			`image: voting-app`
-
-			`ports:`
-
-				`- 5000:80`
-
-			`depends_on:`
-	
-				`- redis`
-
-			`networks:`
-
-				`- back-end`
-
-				`- front-end`
-
-		`result:`
-
-			`image: result`
-
-			`ports:`
-
-				`- 5000:80`
-
-			`networks:`
-
-				`- back-end`
-
-				`- front-end`
-
-	`networks:`
-	
-		`front-end:`
-
-		`back-end:`
+	version: 2
+	services:
+		redis:
+			imnage: redis
+			networks:
+				- back-end
+		db:
+			image: postgres:9.4
+			networks:
+				- back-end
+		vote: 
+			image: voting-app
+			ports:
+				- 5000:80
+			depends_on:
+					- redis
+			networks:
+				- back-end
+				- front-end
+		result:
+			image: result
+			ports:
+				- 5000:80
+			networks:
+				- back-end
+				- front-end
+	networks:	
+		front-end:
+		back-end:
