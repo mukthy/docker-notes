@@ -388,3 +388,189 @@ We can mention the backend-network or front-end network based on the application
 	networks:	
 		front-end:
 		back-end:
+
+## Docker Engine
+
+To run a remote docker enginer : 
+
+`docker -H=remote-docker-engine:2375`
+
+*Example: docker -H=10.10.10.121:2375 run nginx*
+
+Containerization is done on the basis of namespaces.
+
+PID , UnixTimesharing , Mount , InterProcess , Network
+
+**Namespace PID**
+
+The containerization is done using the PID, with each PID can have their own multiple child system PID. They do share the same CPU and Memory.
+
+There is no limitation on the resource usage of the host.
+
+Docker uses cgroups to limit the CPU or Memory usage by the container.
+
+`docker run --cpus=.5 ubuntu`
+
+`docker run --memory=100m ubuntu`
+
+## Docker Storage
+
+**File System**
+
+When a docker container is created the data is stored in the following folders.
+
+	/var/lib/docker  -- this folder is created when docker creats a container.
+				   /aufs
+				   /containers
+				   /image
+				   /volumes
+
+**Layered Architechture**
+
+The dokcer caches the layered information such as if we create a first application whose base os is Ubuntu it will install it and launch the container, when we install a second application with the same base os ubutu the docker does not download the package and doesn't install the apt packages again, rather it will take the caches from the previous layered information. This helps is creating the image files in faster way and uses less disk space.
+
+*Image layer is basically a readonly layer which only comes into the picture when the docker lauches the container using this image*
+
+`docker build . -t repo/image_name`
+
+*Container Layer is a Read/Write layer which can be launched and we can read and write*
+
+`docker run my-webapp`
+
+When we try to modify the application script on the docker image it will automatically make a copy of the application script on the container layer and for future modificaiton will be done on the script which is present on the container layer.
+
+**Volumes**
+
+*Volume Mouting*
+
+When we want to persist the data which we have stored in the container such as database files we can always create a docker volume and mount it to the container's data directory to make a copy of the data.
+
+To create the docker volume;
+
+`docker volume create data_volume`
+
+It creates a directory under the folder location /var/lib/docker/volumes/data_volume_name
+
+To mount the data_volume folder to the docker's data directory:
+
+`docker run -d -v data_volume:/var/lib/mysql mysql`
+
+*Bind Mouting*
+
+If we can to map a location which could be an extenral storage or any location to the container's data directory. We can do that using the below command:
+
+`docker run -d -v /data/mysql:/var/lib/mysql mysql`
+
+**Modern way to mount a location or volume**
+
+`docker run --mount type=bind,source=/data/mysql,target=/var/lib/mysql mysql`
+
+`docker run --mount type=volume,source=mysql,target=/var/lib/mysql mysql`
+
+**Storage Drivers**
+
+AUFS, ZFS, BTRFS, Device Mapper, Overlay, Overlay2.
+
+It depends on the underlying operating system.
+
+## Docker Networking
+
+*Bridge*
+
+`docker run ubuntu`
+
+It is an internal network for the containers and can get assigned with an inetrnal IP address.
+
+*None*
+
+`docker run Ubuntu --network=none`
+
+There will be no network for this container.
+
+*Host*
+
+`docker run ubuntu --network=host`
+
+The network is shared with the Host and the IP address will be assigned.
+
+**User Defined Networks**
+
+To create a separate isolated network for couple of containers.
+
+`docker network create --driver bridge --subnet 182.18.0.0/16 custom-isolated-network`
+
+`docker network create --driver bridge --gateway 182.18.0.1 --subnet 182.18.0.0/16 custom-isolated-network`
+
+`docker network ls`
+
+**Embedded DNS**
+
+`mysql.connect (mysql)`
+
+It is always suggested to use the hostname of the container as they are resolved with the IP address.
+
+## Docker Registry
+
+Registry is the reposistory from where the docker pulls its images from either from a private registry or a public registry.
+
+*Docker private Registry*
+
+`docker run -d -p 5000:5000 --name registry registry:2`
+
+`docker image tag my-image localhost:5000/my-image`
+
+`docker push localhost:5000/my-image`
+
+`docker pull localhost:5000/my-image`
+
+`docker pull 192.168.56.100:5000/my-image`
+
+## Docker Orchestration - Swarm and Kubernetes
+
+Docker Swarm 
+
+Kubernetes by Google
+
+MESOS by Apache
+
+**Docker Swarm**
+
+It needs to deploy more than one Docker Hosts where One host acts as a Swarm Manager.
+
+On Swarm Manager host we need to initiate the swarm manager:
+
+`docker swarm init`
+
+On the node workers or slave we need to run the below command :
+
+`docker swarm join <token>`
+
+If we need to run 3 web-service on the node workers or slave:
+
+`docker service create --replicas=3 -p 8080:80 my-web-server`
+
+`docker service create --replicas=3 -p 8080:80 --network frontend my-web-server`
+
+`docker service create --replicas=3 my-web-server`
+
+## Kubernetes
+
+`kubctl run --replicas=1000 myweb-server`
+
+`kubctl scale --replicas=1000 myweb-server`
+
+`kubctl rolling-update myweb-server --image=web-server:2`
+
+`kubctl rolling-update myweb-server --rollback`
+
+*kubectl*
+
+To run a kubernetes
+
+`kubectl run hello-minikube`
+
+`kubctl cluster-info`
+
+`kubectl get nodes`
+
+`kubctl run mywebserver --image=my-web-app --replicas=3`
