@@ -245,3 +245,21 @@ The 10 is appended by the CMD mentioned in the Dokerfile and the container will 
 To modify the entry point of the Dockerfile:
 
 `docker run --entrypoint sleep2.0 ubuntu-sleeper 10`
+
+## Docker Compose 
+
+docker links commands
+
+`docker run -d --name=redis redis`
+
+`docker run -d --name=db [image_name]`
+
+`docker run -d --name=vote -p 5000:80 --link redis:redis voting-app`
+
+`docker run -d --name=result -p 5001:80 --link db:db result-app`
+
+`docker run -d --name=worker --link db:db --link redis:redis worker`
+
+*docker link may get depriciated in the future*
+
+**Docker Yaml**
